@@ -1,0 +1,19 @@
+{
+  "name": "fishermenproject",
+  "version": "1.0.0",
+  "description": "API TEST",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/celsom/API-TEST.git"
+  },
+  "author": "celso manhique",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/celsom/API-TEST/issues"
+  },
+  "homepage": "https://github.com/celsom/API-TEST#readme"
+}
