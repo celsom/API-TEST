@@ -9,7 +9,8 @@ var mysqlConnection = mysql.createConnection({
 	host:'localhost',
 	user:'root',
 	password:'',
-	database:'EmployeeDB'
+	database:'EmployeeDB',
+	multipleStatements: true
 
 });
 
@@ -26,7 +27,62 @@ app.listen(3000,()=>console.log('express server is running at port no: 3000'));
 app.get('/employees',(req,res)=>{
 	mysqlConnection.query('SELECT * FROM Employee',(err,rows,fields)=>{
 		if(!err)
-		console.log(rows);
+		res.send(rows);
+		else
+		console.log(err);
+	})
+
+});
+
+
+// get an employee
+app.get('/employees/:id',(req,res)=>{
+	mysqlConnection.query('SELECT * FROM Employee WHERE EmpID = ?',[req.params.id],(err,rows,fields)=>{
+		if(!err)
+		res.send(rows);
+		else
+		console.log(err);
+	})
+
+});
+
+
+// delete an employee
+app.delete('/employees/:id',(req,res)=>{
+	mysqlConnection.query('DELETE FROM Employee WHERE EmpID = ?',[req.params.id],(err,rows,fields)=>{
+		if(!err)
+		res.send('DELETED SUCCESSFULLY');
+		else
+		console.log(err);
+	})
+
+});
+
+
+// INSERT AN EMPLOYEE
+app.post('/employees',(req,res)=>{
+	let emp = req.body;
+	var sql = "SET @EmpID=?;SET @Name=?;SET @EmpCode=?;SET @Salary=?;CALL new_procedure(@EmpID,@Name,@EmpCode,@Salary);";
+	mysqlConnection.query(sql,[emp.EmpID,emp.Name,emp.EmpCode,emp.Salary],(err,rows,fields)=>{
+		if(!err)
+			rows.forEach(element =>{
+				if(element.constructor == Array)
+					res.send('iserted employ id :' +element[0].EmpID);
+			});
+		
+		else
+		console.log(err);
+	})
+
+});
+
+app.put('/employees',(req,res)=>{
+	let emp = req.body;
+	var sql = "SET @EmpID=?;SET @Name=?;SET @EmpCode=?;SET @Salary=?;CALL new_procedure(@EmpID,@Name,@EmpCode,@Salary);";
+	mysqlConnection.query(sql,[emp.EmpID,emp.Name,emp.EmpCode,emp.Salary],(err,rows,fields)=>{
+		if(!err)
+			res.send('user updated')
+		
 		else
 		console.log(err);
 	})
